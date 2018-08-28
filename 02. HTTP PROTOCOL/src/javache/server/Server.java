@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.FutureTask;
+
 import javache.constants.*;
 
 public class Server {
@@ -23,6 +24,8 @@ public class Server {
     public void run() throws IOException {
         this.server = new ServerSocket(this.port);
         this.server.setSoTimeout(WebConstants.SOCKET_TIMEOUT_MILLISECONDS);
+
+        System.out.println("Localhost: " + WebConstants.SERVER_PORT);
 
         while (true) {
             try (Socket clientSocket = this.server.accept()) {

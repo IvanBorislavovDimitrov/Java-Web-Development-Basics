@@ -1,5 +1,6 @@
 package javache.handlers;
 
+import javache.constants.WebConstants;
 import javache.http.HttpRequest;
 import javache.http.HttpRequestImpl;
 import javache.http.HttpResponse;
@@ -40,19 +41,33 @@ public class RequestHandler {
                 this.httpResponse.addHeader(stringStringEntry.getKey(), stringStringEntry.getValue());
             }
 
-            this.httpResponse.setStatusCode(200);
+            this.httpResponse.setStatusCode(WebConstants.OK);
+
+            this.addMimeType();
 
             this.httpResponse.setContent(Files.readAllBytes(Paths.get(file.getPath())));
 
         } catch (IOException e) {
+            this.httpResponse = new HttpResponseImpl();
             File file = new File("src/resources/not-found.html");
+            for (Map.Entry<String, String> stringStringEntry : this.httpRequest.getHeaders().entrySet()) {
+                this.httpResponse.addHeader(stringStringEntry.getKey(), stringStringEntry.getValue());
+            }
             try {
                 this.httpResponse.setContent(Files.readAllBytes(Paths.get(file.getPath())));
-                this.httpResponse.setStatusCode(404);
+                this.httpResponse.setStatusCode(WebConstants.NOT_FOUND);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }
     }
 
+    private void addMimeType() {
+        String type = this.httpRequest.getRequestUrl().substring(this.httpRequest.getRequestUrl().indexOf(".") + 1);
+        if (type.equals("html")) {
+            this.httpResponse.addHeader("Content-Type", "multipart");
+        } else if (type.equals("jpg") || type.equals("jpeg") || type.equals("png")) {
+            this.httpResponse.addHeader("Content-Type", "image/png");
+        }
+    }
 }

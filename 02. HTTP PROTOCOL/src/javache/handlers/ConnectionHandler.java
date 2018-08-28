@@ -1,5 +1,6 @@
 package javache.handlers;
 
+import javache.constants.WebConstants;
 import javache.io.Reader;
 import javache.io.Writer;
 
@@ -31,11 +32,13 @@ public class ConnectionHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void run() {
         try {
+
             String requestContent = Reader.readAllLines(this.clientSocketInputStream);
             byte[] responseContent = this.requestHandler.handleRequest(requestContent);
 
