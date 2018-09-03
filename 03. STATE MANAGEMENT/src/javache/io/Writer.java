@@ -1,0 +1,18 @@
+package javache.io;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+public final class Writer {
+
+    public Writer() {
+
+    }
+
+    public void writeBytes(byte[] requestContent, OutputStream clientSocketOutputStream) throws IOException {
+        DataOutputStream buffer = new DataOutputStream(clientSocketOutputStream);
+
+        buffer.write(requestContent);
+    }
+}
