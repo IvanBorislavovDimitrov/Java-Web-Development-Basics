@@ -1,16 +1,17 @@
 package javache.server;
 
+import javache.constants.WebConstants;
 import javache.handlers.ConnectionHandler;
 import javache.handlers.RequestHandler;
+import javache.http.HttpSessionStorage;
+import javache.repository.UserRepository;
+import javache.repository.UserRepositoryImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.FutureTask;
-
-import javache.constants.*;
-import javache.http.HttpSessionStorage;
 
 public class Server {
 
@@ -27,14 +28,16 @@ public class Server {
         this.server.setSoTimeout(WebConstants.SOCKET_TIMEOUT_MILLISECONDS);
 
         System.out.println("Localhost: " + WebConstants.SERVER_PORT);
+        HttpSessionStorage httpSessionStorage = new HttpSessionStorage();
+
+        UserRepository userRepository = new UserRepositoryImpl();
 
         while (true) {
             try (Socket clientSocket = this.server.accept()) {
                 clientSocket.setSoTimeout(WebConstants.SOCKET_TIMEOUT_MILLISECONDS);
 
-                HttpSessionStorage httpSessionStorage = new HttpSessionStorage();
 
-                ConnectionHandler connectionHandler = new ConnectionHandler(clientSocket, new RequestHandler(httpSessionStorage));
+                ConnectionHandler connectionHandler = new ConnectionHandler(clientSocket, new RequestHandler(httpSessionStorage, userRepository));
                 FutureTask<?> task = new FutureTask<>(connectionHandler, null);
                 task.run();
             } catch (SocketTimeoutException e) {

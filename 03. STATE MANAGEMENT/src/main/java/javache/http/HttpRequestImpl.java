@@ -84,8 +84,7 @@ public class HttpRequestImpl implements HttpRequest {
 
     private void initializeBodyParams() {
         String[] requestUrlParams = this.totalContent.substring(0, this.totalContent.indexOf("\r\n")).split("\\s+");
-        if (requestUrlParams[1].contains("" +
-                "?")) {
+        if (requestUrlParams[1].contains("?")) {
             String[] tokens = requestUrlParams[1].split("\\?")[1].split("&");
 
             Arrays.stream(tokens).forEach(t -> {
@@ -100,9 +99,13 @@ public class HttpRequestImpl implements HttpRequest {
             if (tokens.length == 2) {
                 String[] params = tokens[1].split("&");
                 for (String param : params) {
+                    String key = null;
+                    String value = null;
                     String[] keyValue = param.split("=");
-                    String key = keyValue[0];
-                    String value = keyValue[1];
+                    key = keyValue[0];
+                    if (keyValue.length == 2) {
+                        value = keyValue[1];
+                    }
                     this.bodyParameters.put(key, value);
                 }
             }

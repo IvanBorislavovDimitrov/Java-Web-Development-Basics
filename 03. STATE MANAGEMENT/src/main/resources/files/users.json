@@ -1,0 +1,27 @@
+[
+  {
+    "id": "e08056bd-e58d-47d4-96a4-e6527a07bae3",
+    "email": "kondio",
+    "password": "123"
+  },
+  {
+    "id": "2e4d50a1-77d8-4234-8018-472288661f39",
+    "email": "dedo",
+    "password": "123"
+  },
+  {
+    "id": "7eb7baaa-7bbe-4f43-a833-fe5818564290",
+    "email": "petko",
+    "password": "kura"
+  },
+  {
+    "id": "35c2d8e6-5ffa-4ae2-a288-9f0ed427b6cf",
+    "email": "sinan_sakic",
+    "password": "123"
+  },
+  {
+    "id": "ca4b5f2c-0b08-421b-8bcd-611e3e58c3ab",
+    "email": "pedro",
+    "password": "123"
+  }
+]

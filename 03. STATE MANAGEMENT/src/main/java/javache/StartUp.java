@@ -1,9 +1,9 @@
 package javache;
 
+import javache.constants.WebConstants;
 import javache.server.Server;
 
 import java.io.IOException;
-import javache.constants.*;
 
 public class StartUp {
 

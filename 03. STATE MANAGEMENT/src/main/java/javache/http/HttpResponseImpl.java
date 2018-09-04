@@ -1,6 +1,8 @@
 package javache.http;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpResponseImpl implements HttpResponse {
 
@@ -83,7 +85,6 @@ public class HttpResponseImpl implements HttpResponse {
 
         sb.append(String.format("Date: %s", new Date())).append(System.lineSeparator());
         sb.append("Server: Javache/1.0.0").append(System.lineSeparator());
-        sb.append(System.lineSeparator());
 
         if(!this.cookies.isEmpty()) {
             sb.append("Set-Cookie: ");
