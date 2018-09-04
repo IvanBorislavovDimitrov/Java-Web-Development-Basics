@@ -124,21 +124,19 @@ public class RequestHandler {
             }
         }
         boolean registered = false;
-        if (isEmailSet && isPasswordSet) {
+        if (isEmailSet && isPasswordSet && isConfirmPasswordSet) {
             if (password.equals(confirmPassword)) {
                 this.userRepository.save(user);
                 registered = true;
             }
         }
-
-        if (!registered) {
-
-        }
-
-        if (to.equals("/")) {
-            HttpSession httpSession = new HttpSessionImpl();
-            httpSession.addAttribute("loggedUser", user);
-            this.httpSessionStorage.addSession(httpSession);
+        
+        if (registered) {
+            if (to.equals("/")) {
+                HttpSession httpSession = new HttpSessionImpl();
+                httpSession.addAttribute("loggedUser", user);
+                this.httpSessionStorage.addSession(httpSession);
+            }
         }
     }
 
