@@ -156,11 +156,13 @@ public class RequestHandler {
     }
 
     // TODO
-    private void processGetRequest() {
+    private void processGetRequest() throws IOException {
         String url = this.httpRequest.getRequestUrl();
         url = this.parseUrl(url);
 
         if (url.equals(PAGES_FOLDER + "logout" + HTML_EXTENSION)) {
+            if (this.checkForValidLoginUser())
+                return;
             loggedUser = null;
         }
 
@@ -196,7 +198,25 @@ public class RequestHandler {
         }
     }
 
+    private boolean checkForValidLoginUser() throws IOException {
+        if (loggedUser == null) {
+            File mustBeLoggedFile = new File(PAGES_FOLDER + "must-be-logged" + HTML_EXTENSION);
+            this.httpResponse.setContent(Files.readAllBytes(Paths.get(mustBeLoggedFile.getPath())));
+
+            for (Map.Entry<String, String> stringStringEntry : this.httpRequest.getHeaders().entrySet()) {
+                if (!stringStringEntry.getKey().equalsIgnoreCase("Content-length")) {
+                    this.httpResponse.addHeader(stringStringEntry.getKey(), stringStringEntry.getValue());
+                }
+            }
+
+            return true;
+        }
+        return false;
+    }
+
     private void loadHomePage(File file) throws IOException {
+        if (this.checkForValidLoginUser())
+            return;
         List<String> lines = Files.readAllLines(Paths.get(file.getPath()));
         StringBuilder sb = new StringBuilder();
         for (String line : lines) {
